@@ -8,34 +8,56 @@ RUN apt-get update && \
         python3-colcon-common-extensions \
         git
 
-# Create a workspace and clone the rmw_zenoh repository
-RUN mkdir -p /root/ws_rmw_zenoh/src && \
-    cd /root/ws_rmw_zenoh/src && \
-    git clone https://github.com/ros2/rmw_zenoh.git
+# Create a non-root user and group
+ARG USERNAME=rosuser
+ARG USER_UID=1001
+ARG USER_GID=$USER_UID
 
-# Install dependencies using rosdep
+RUN groupadd --gid $USER_GID $USERNAME && \
+    useradd --uid $USER_UID --gid $USER_GID -ms /bin/bash $USERNAME
+
+# Set home directory variable
+ENV HOME=/home/$USERNAME
+
+# Create a workspace in /opt
+RUN mkdir -p /opt/ws_rmw_zenoh/src
+
+# Clone the rmw_zenoh repository (as root)
+RUN git clone https://github.com/ros2/rmw_zenoh.git /opt/ws_rmw_zenoh/src/rmw_zenoh
+
+# Install dependencies using rosdep (as root)
 RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && \
     rosdep update && \
-    rosdep install --from-paths /root/ws_rmw_zenoh/src --ignore-src --rosdistro jazzy -y"
+    rosdep install --from-paths /opt/ws_rmw_zenoh/src --ignore-src --rosdistro jazzy -y"
 
-# Build the workspace
+# Adjust permissions of the workspace
+RUN chown -R $USERNAME:$USERNAME /opt/ws_rmw_zenoh
+
+# Switch to the new user
+USER $USERNAME
+
+# Build the workspace (as rosuser)
 RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && \
-    cd /root/ws_rmw_zenoh && \
+    cd /opt/ws_rmw_zenoh && \
     colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release"
 
-# At the end of your Dockerfile
-RUN echo 'source /ros_entrypoint.sh' >> /root/.bashrc && \
-    echo 'source /root/ws_rmw_zenoh/install/setup.bash' >> /root/.bashrc
+# Switch back to root to modify global configurations
+USER root
+
+# Source setup scripts globally
+RUN echo 'source /ros_entrypoint.sh' >> /etc/bash.bashrc && \
+    echo 'source /opt/ws_rmw_zenoh/install/setup.bash' >> /etc/bash.bashrc
 
 # Set the environment variable for RMW implementation
 ENV RMW_IMPLEMENTATION=rmw_zenoh_cpp
 
-# Copy the zenoh_entrypoint.sh into the image
+# Copy the zenoh_entrypoint.sh into the image and adjust permissions
 COPY zenoh_entrypoint.sh /zenoh_entrypoint.sh
 RUN chmod +x /zenoh_entrypoint.sh
 
 # Expose the Zenoh router port (optional)
-EXPOSE 7447
+EXPOSE 7447/udp
+EXPOSE 7447/tcp
 
 # Set the entrypoint to zenoh_entrypoint.sh
 ENTRYPOINT ["/zenoh_entrypoint.sh"]
