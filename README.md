@@ -1,7 +1,6 @@
-# ROS 2 Zenoh Full Desktop - Jazzy Jalisco
-
 <p align="center">
   <img src="https://zenoh.io/img/zenoh-dragon-bg-150x163.png" alt="Zenoh Logo">
+  # ROS 2 Zenoh Full Desktop - Jazzy Jalisco
 </p>
 
 Zenoh router is started as a backgroud process and everything is sourced as /zenoh_entrypoint.sh is triggered.
