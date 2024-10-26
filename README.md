@@ -1,6 +1,6 @@
 # ROS 2 Zenoh Full Desktop - Jazzy Jalisco
 
-<div style="text-align: center;">
+<div style="display: flex; justify-content: center;">
   <img src="https://zenoh.io/img/zenoh-dragon-bg-150x163.png" alt="Zenoh Logo">
 </div>
 
