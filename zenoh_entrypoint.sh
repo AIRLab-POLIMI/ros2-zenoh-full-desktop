@@ -1,20 +1,22 @@
 #!/bin/bash
 set -e
 
-# Source the original ros_entrypoint.sh
-source "/ros_entrypoint.sh"
+# Source the ROS 2 environment
+source /opt/ros/jazzy/setup.bash
 
-# Source the rmw_zenoh_cpp workspace
-source "/opt/ws_rmw_zenoh/install/setup.bash"
-
-# Ensure the log directory exists in the user's home directory
-mkdir -p "$HOME/logs/"
+# Source the workspace overlay
+source /opt/ws_rmw_zenoh/install/setup.bash
 
 # Check if rmw_zenohd is already running
-if ! pgrep -x "rmw_zenohd" > /dev/null; then
-    # Start the Zenoh router in the background
-    nohup ros2 run rmw_zenoh_cpp rmw_zenohd > "$HOME/logs/rmw_zenohd.log" 2>&1 &
+if ! pgrep -x "rmw_zenohd" > /dev/null
+then
+    # Start rmw_zenohd in the background without verbosity
+    ros2 run rmw_zenoh_cpp rmw_zenohd >/dev/null 2>&1 &
 fi
 
-# Start an interactive shell
-exec "$SHELL"
+# Execute any passed command or start an interactive shell
+if [ "$#" -eq 0 ]; then
+    exec bash
+else
+    exec "$@"
+fi

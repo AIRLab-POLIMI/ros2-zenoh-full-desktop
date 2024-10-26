@@ -8,16 +8,8 @@ RUN apt-get update && \
         python3-colcon-common-extensions \
         git
 
-# Create a non-root user and group
-ARG USERNAME=rosuser
-ARG USER_UID=1001
-ARG USER_GID=$USER_UID
-
-RUN groupadd --gid $USER_GID $USERNAME && \
-    useradd --uid $USER_UID --gid $USER_GID -ms /bin/bash $USERNAME
-
 # Set home directory variable
-ENV HOME=/home/$USERNAME
+ENV HOME=/root
 
 # Create a workspace in /opt
 RUN mkdir -p /opt/ws_rmw_zenoh/src
@@ -30,19 +22,10 @@ RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && \
     rosdep update && \
     rosdep install --from-paths /opt/ws_rmw_zenoh/src --ignore-src --rosdistro jazzy -y"
 
-# Adjust permissions of the workspace
-RUN chown -R $USERNAME:$USERNAME /opt/ws_rmw_zenoh
-
-# Switch to the new user
-USER $USERNAME
-
-# Build the workspace (as rosuser)
+# Build the workspace (as root)
 RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && \
     cd /opt/ws_rmw_zenoh && \
     colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release"
-
-# Switch back to root to modify global configurations
-USER root
 
 # Source setup scripts globally
 RUN echo 'source /ros_entrypoint.sh' >> /etc/bash.bashrc && \
