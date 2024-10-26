@@ -5,8 +5,6 @@
   <img src="https://images.squarespace-cdn.com/content/v1/606d378755a86f589aa297b7/1717136168404-CV7O6LD1M56PNET8G161/JazzyJalisco_Final.png" alt="Jazzy Jalisco Logo" width="150">
 </div>
 
-Zenoh route
-
 Zenoh router is started as a backgroud process and everything is sourced as /zenoh_entrypoint.sh is triggered.
 
 ## Step 1: Pull the Docker Image
