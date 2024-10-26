@@ -1,7 +1,14 @@
 <p align="center">
   <img src="https://zenoh.io/img/zenoh-dragon-bg-150x163.png" alt="Zenoh Logo">
-  # ROS 2 Zenoh Full Desktop - Jazzy Jalisco
 </p>
+
+<p align="center">
+  <a href="https://hub.docker.com/repository/docker/airlabpolimi/ros2-zenoh-full-desktop">
+    <img src="https://img.shields.io/badge/Docker%20Hub-Repository-blue?logo=docker" alt="Docker Hub">
+  </a>
+</p>
+
+# ROS 2 Zenoh Full Desktop - Jazzy Jalisco
 
 Zenoh router is started as a backgroud process and everything is sourced as /zenoh_entrypoint.sh is triggered.
 
