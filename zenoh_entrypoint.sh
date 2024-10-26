@@ -13,10 +13,3 @@ then
     # Start rmw_zenohd in the background without verbosity
     ros2 run rmw_zenoh_cpp rmw_zenohd >/dev/null 2>&1 &
 fi
-
-# Execute any passed command or start an interactive shell
-if [ "$#" -eq 0 ]; then
-    exec bash
-else
-    exec "$@"
-fi

@@ -8,9 +8,6 @@ RUN apt-get update && \
         python3-colcon-common-extensions \
         git
 
-# Set home directory variable
-ENV HOME=/root
-
 # Create a workspace in /opt
 RUN mkdir -p /opt/ws_rmw_zenoh/src
 
@@ -27,12 +24,11 @@ RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && \
     cd /opt/ws_rmw_zenoh && \
     colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release"
 
-# Source setup scripts globally
-RUN echo 'source /ros_entrypoint.sh' >> /etc/bash.bashrc && \
-    echo 'source /opt/ws_rmw_zenoh/install/setup.bash' >> /etc/bash.bashrc
-
 # Set the environment variable for RMW implementation
 ENV RMW_IMPLEMENTATION=rmw_zenoh_cpp
+
+# Source setup scripts globally
+RUN echo 'source /zenoh_entrypoint.sh' >> /etc/bash.bashrc
 
 # Copy the zenoh_entrypoint.sh into the image and adjust permissions
 COPY zenoh_entrypoint.sh /zenoh_entrypoint.sh
@@ -43,4 +39,4 @@ EXPOSE 7447/udp
 EXPOSE 7447/tcp
 
 # Set the entrypoint to zenoh_entrypoint.sh
-ENTRYPOINT ["/zenoh_entrypoint.sh"]
+ENTRYPOINT ["bash"]
