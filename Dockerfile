@@ -6,7 +6,11 @@ RUN apt-get update && \
     apt-get install -y \
         python3-pip \
         python3-colcon-common-extensions \
-        git
+        git \
+        ros-jazzy-rosbag2-storage-mcap \
+        ros-jazzy-demo-nodes-cpp \
+        ros-jazzy-foxglove-bridge \
+        ros-jazzy-tf2-ros
 
 # Create a workspace in /opt
 RUN mkdir -p /opt/ws_rmw_zenoh/src
@@ -38,5 +42,9 @@ RUN chmod +x /zenoh_entrypoint.sh
 EXPOSE 7447/udp
 EXPOSE 7447/tcp
 
+# Expose the Foxglove ROS Bridge port (optional)
+EXPOSE 8765/tcp
+EXPOSE 8765/udp
+
 # Set the entrypoint to zenoh_entrypoint.sh
-ENTRYPOINT ["bash"]
+ENTRYPOINT ["/bin/bash"]
