@@ -2,7 +2,7 @@
 set -e
 
 # Source the ROS 2 environment
-source /opt/ros/jazzy/setup.bash
+source /opt/ros/humble/setup.bash
 
 # Source the workspace overlay
 source /opt/ws_rmw_zenoh/install/setup.bash
