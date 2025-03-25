@@ -15,7 +15,7 @@
 </p>
 
 ---
-# ROS 2 humble Jalisco Full Desktop + FoxGlove-Studio Bridge + Zenoh RMW
+# ROS 2 Humble Hawksbill Full Desktop + FoxGlove-Studio Bridge + Zenoh RMW
 
 Zenoh router is started as a backgroud process and everything is sourced as /zenoh_entrypoint.sh is triggered.
 
