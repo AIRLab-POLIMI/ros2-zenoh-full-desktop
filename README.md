@@ -15,19 +15,19 @@
 </p>
 
 ---
-# ROS 2 Jazzy Jalisco Full Desktop + FoxGlove-Studio Bridge + Zenoh RMW
+# ROS 2 humble Jalisco Full Desktop + FoxGlove-Studio Bridge + Zenoh RMW
 
 Zenoh router is started as a backgroud process and everything is sourced as /zenoh_entrypoint.sh is triggered.
 
 ## Step 1: Pull the Docker Image
 ```bash
-docker pull airlabpolimi/ros2-zenoh-full-desktop:jazzy
+docker pull airlabpolimi/ros2-zenoh-full-desktop:humble
 ```
 
 ## Step 2: Start the Docker Container
 In the first terminal, run:
 ```bash
-docker run -it --name ros2-zenoh-container airlabpolimi/ros2-zenoh-full-desktop:jazzy
+docker run -it --name ros2-zenoh-container airlabpolimi/ros2-zenoh-full-desktop:humble
 ```
 
 ## Step 3: Run the ROS 2 TALKER Node
